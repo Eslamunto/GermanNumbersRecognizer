@@ -21,6 +21,7 @@ public class BuildRecSysRecognizer implements Runnable {
 	private Microphone microphone;
 	private Recognizer recognizer;
 	private List<RecListener> recListeners = new ArrayList<RecListener>();
+	private char theCharacter;
 	
 	/**
 	 * create the recognizer
@@ -81,6 +82,7 @@ public class BuildRecSysRecognizer implements Runnable {
 		microphone.stopRecording();
 		if(result != null) {
 			String resultText = result.getBestFinalResultNoFiller();
+			setTheCharacter(resultText.toCharArray()[0]);
 			if (!resultText.isEmpty()) {
 				fireListeners(resultText);
 			} else {
@@ -88,8 +90,19 @@ public class BuildRecSysRecognizer implements Runnable {
 			}
 		
 		}
+		System.out.println("$$$$$$$$$$$$$$$$$$$$");
 		
 	}
+	
+	public void setTheCharacter(char c) {
+		this.theCharacter = c;
+	}
+	
+	public char getTheCharacter() {
+		return this.theCharacter;
+	}
+	
+	
 
 	public synchronized void addRecListener(RecListener rs) {
 		recListeners.add(rs);
