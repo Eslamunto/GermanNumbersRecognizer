@@ -22,6 +22,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -56,7 +59,8 @@ public class BuildRecSys extends JFrame {
 	private JLabel scoreLabel;
 	private JProgressBar progressBar;
 	private JButton nextButton;
-
+	private JLabel wowLabel;
+	
 	public ArrayList<String> germanDictionary;
 
 	public BuildRecSys() {
@@ -69,25 +73,29 @@ public class BuildRecSys extends JFrame {
 
 		nextButton.addMouseListener(new MouseListener() {
 
-			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				String textInTextbox = messageTextField.getText();
-				if(textInTextbox.toLowerCase().trim().equals(germanDictionary.get(POINTER))) {
-					successFunction();
-				} else {
-					failFunction();
+				try {
+					getWordByBuffer();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				
+				// String textInTextbox = messageTextField.getText();
+				// if(textInTextbox.toLowerCase().trim().equals(germanDictionary.get(POINTER)))
+				// {
+				// successFunction();
+				// } else {
+				// failFunction();
+				// }
 
 			}
 
 			private void failFunction() {
-				SCORE-=2;
+				SCORE -= 2;
 				POINTER++;
 				go(POINTER);
-				
+
 			}
 
 			private void successFunction() {
@@ -95,31 +103,31 @@ public class BuildRecSys extends JFrame {
 				progressBar.setValue(progressBarCtr++);
 				POINTER++;
 				go(POINTER);
-				
+
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -129,24 +137,24 @@ public class BuildRecSys extends JFrame {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("eins");
 		list.add("zwei");
-		list.add("drei");
-		list.add("vier");
+		list.add("drei");//
+		list.add("vier");//
 		list.add("funf");
-		list.add("sechs");
-		list.add("sieben");
-		list.add("acht");
+		list.add("sechs");//h c
+		list.add("sieben");//
+		list.add("acht");// ch
 		list.add("neun");
-		list.add("zehn");
-		list.add("elf");
-		list.add("zwolf");
-		list.add("dreizehn");
-		list.add("vierzehn");
-		list.add("funfzehn");
-		list.add("sechzehn");
-		list.add("siebzehn");
-		list.add("achtzehn");
-		list.add("neunzehn");
-		list.add("zwanzig");
+		list.add("zehn");//h
+		list.add("elf");//
+		list.add("zwolf");//
+		list.add("dreizehn");//
+		list.add("vierzehn");//
+		list.add("funfzehn");//
+		list.add("sechzehn");//
+		list.add("siebzehn");//
+		list.add("achtzehn");//
+		list.add("neunzehn");//
+		list.add("zwanzig");//
 
 		return list;
 	}
@@ -169,6 +177,8 @@ public class BuildRecSys extends JFrame {
 		mainPanel.add(scoreLabel);
 		messageTextField = new JTextField(25);
 		mainPanel.add(messageTextField);
+		wowLabel = new JLabel();
+		mainPanel.add(wowLabel);
 
 		return mainPanel;
 	}
@@ -217,8 +227,8 @@ public class BuildRecSys extends JFrame {
 
 	private void updateScore(int score) {
 		// TODO Auto-generated method stub
-		scoreLabel.setText(score+""); 
-		
+		scoreLabel.setText(score + "");
+
 	}
 
 	private void changeDisplayGermanWord(String germanWord) {
@@ -227,29 +237,40 @@ public class BuildRecSys extends JFrame {
 
 	}
 
+	private void getWordByBuffer() throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String currentWord = germanDictionary.get(POINTER);
+		int currentWordSize = germanDictionary.get(POINTER).length();
+		int correctLettersSoFar = 0;
+		wowLabel.setText("");
+		for (int i = 0; i < currentWordSize; i++){
+			for (int j = 0; j < 3; j++) {
+				char c = (char) br.readLine().toCharArray()[0];
+				if (c == currentWord.charAt(i)) {
+					System.out.println("true!!!");
+					SCORE += 10;
+					correctLettersSoFar++;
+					break;
+				} else {
+					System.out.println("false! we are expecting:" + currentWord.charAt(i));
+					SCORE -= 2;
+
+				}
+			}
+		}
+		
+		if(correctLettersSoFar == currentWordSize) {
+			progressBar.setValue(progressBarCtr++);
+			wowLabel.setText("WOW!");
+			
+		}
+		
+		POINTER++;
+		go(POINTER);
+	}
+
 	public static void main(String[] args) {
-		// // Create the frame
-		// JFrame frame = new JFrame("Demo");
-		// // Set default close operation
-		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// // add a label
-		// JLabel wordToBeDisplayedLabel = new JLabel("Guten Morgen!");
-		// // add the created label to the frame
-		//
-		// final JButton speakButton = new JButton("Speak");
-		// JProgressBar progressBar;
-		// progressBar = new JProgressBar(0, 10);
-		// progressBar.setValue(0);
-		// progressBar.setStringPainted(true);
-		// progressBar.setString("Progress Bar String");
-		// frame.getContentPane().add(wordToBeDisplayedLabel,
-		// BorderLayout.CENTER);
-		// frame.getContentPane().add(speakButton, BorderLayout.EAST);
-		// frame.getContentPane().add(progressBar, BorderLayout.SOUTH);
-		// // set size for the frame
-		// frame.setSize(500, 500);
-		// // set frame visibility
-		// frame.setVisible(true);
 
 		BuildRecSys x = new BuildRecSys();
 		x.setVisible(true);
