@@ -217,7 +217,7 @@ public class BuildRecSys extends JFrame {
 
 	private void updateScore(int score) {
 		// TODO Auto-generated method stub
-		scoreLabel.setText(score+"");
+		scoreLabel.setText(score+""); 
 		
 	}
 
