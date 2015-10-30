@@ -178,6 +178,7 @@ public class BuildRecSys extends JFrame {
 	private int wordColor = 0;
 	private int charPosition = 0;
 	private int noOfTrials = 0;
+	private String moveOn;
 	private static int POINTER = 0; // to the words in the array
 	private int SCORE = 0;
 	private int progressBarCtr = 0;
@@ -271,38 +272,71 @@ public class BuildRecSys extends JFrame {
 			// }
 
 			private void micHelper() {
+
 				String currentWord = germanDictionary.get(POINTER);
 				int currentWordSize = germanDictionary.get(POINTER).length();
 				int correctLettersSoFar = 0;
-				wowLabel.setText("");
 
 				char c = recognizer.getTheCharacter();
 				if (c == currentWord.charAt(charPosition) && noOfTrials < 3) {
-					System.out.println("true!!!");
+					// System.out.println("true!!!");
+					updateMessageToUser("<html><font color='green'>True!</font> Move on to the next letter.</html>");
 					SCORE += 10;
 					correctLettersSoFar++;
 					charPosition++;
 					noOfTrials = 0;
 				} else {
-					System.out.println("false! we are expecting:"
-							+ currentWord.charAt(charPosition));
+					// System.out.println("false! we are expecting:"
+					// + currentWord.charAt(charPosition));
+					if ((2 - noOfTrials) == 0) {
+						moveOn = "Move on to the next letter";
+					} else {
+						moveOn = "";
+					}
+					updateMessageToUser("<html><font color='red'>False!</font> we are expecting: "
+							+ currentWord.charAt(charPosition)
+							+ ". You have "
+							+ (2 - noOfTrials)
+							+ " trials!<br>"
+							+ moveOn
+							+ "</html>");
+
 					SCORE -= 2;
 					noOfTrials++;
 					if (noOfTrials > 2) {
 						noOfTrials = 0; // reset the number of trials and we are
 										// ready to move on to the next WHATEVER
 						charPosition++;
+						moveOn = "";
 					}
 				}
 
 				if (charPosition == currentWordSize) {
 					charPosition = 0;
 					POINTER++;
-					go(POINTER);
-					if (correctLettersSoFar == currentWordSize) {
-						progressBar.setValue(progressBarCtr++);
-						wowLabel.setText("WOW!");
+					if(POINTER < 20) {
+						updateMessageToUser(" ");
+						go(POINTER);
+
+						if (correctLettersSoFar == currentWordSize) {
+							progressBarCtr++;
+
+							if (progressBarCtr <= 5) {
+								progressBar.setForeground(Color.red);
+							} else if (progressBarCtr > 5 && progressBarCtr <= 10) {
+								progressBar.setForeground(Color.orange);
+							} else if (progressBarCtr > 10 && progressBarCtr <= 15) {
+								progressBar.setForeground(Color.yellow);
+							} else if (progressBarCtr > 15 && progressBarCtr <= 20) {
+								progressBar.setForeground(Color.green);
+							}
+
+							progressBar.setValue(progressBarCtr);
+						}
+					}else {
+						wowLabel.setText("WOW!!");
 					}
+
 				}
 			}
 
@@ -446,7 +480,7 @@ public class BuildRecSys extends JFrame {
 	// }
 
 	private JPanel createMainPanel() {
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+		// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(backgroundColor);
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -460,19 +494,20 @@ public class BuildRecSys extends JFrame {
 		speakButton.setEnabled(true);
 		mainPanel.add(speakButton);
 		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		
+
 		messageToUser = new JLabel();
-		messageToUser.setText("ALOHA");
+		messageToUser.setText("");
 		mainPanel.add(messageToUser);
-	
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
+
 		scoreLabel = new JLabel();
 		mainPanel.add(scoreLabel);
 		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		
+
 		progressBar = new JProgressBar(0, 20);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
-		progressBar.setString("Progress Bar String");
+		progressBar.setString("Progress");
 		mainPanel.add(progressBar);
 		mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 		mainPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -480,7 +515,6 @@ public class BuildRecSys extends JFrame {
 		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		nextButton = new JButton("Next");
 		mainPanel.add(nextButton);
-
 
 		messageTextField = new JTextField(25);
 		mainPanel.add(messageTextField);
@@ -537,7 +571,7 @@ public class BuildRecSys extends JFrame {
 		// TODO Auto-generated method stub
 		scoreLabel.setText("Score: " + score + "");
 	}
-	
+
 	private void updateMessageToUser(String message) {
 		messageToUser.setText(message);
 	}
@@ -565,7 +599,6 @@ public class BuildRecSys extends JFrame {
 		String currentWord = germanDictionary.get(POINTER);
 		int currentWordSize = germanDictionary.get(POINTER).length();
 		int correctLettersSoFar = 0;
-		wowLabel.setText("");
 		for (int i = 0; i < currentWordSize; i++) {
 			for (int j = 0; j < 3; j++) {
 				char c = (char) br.readLine().toCharArray()[0];
@@ -578,19 +611,21 @@ public class BuildRecSys extends JFrame {
 					System.out.println("false! we are expecting:"
 							+ currentWord.charAt(i));
 					SCORE -= 2;
-
 				}
 			}
 		}
 
 		if (correctLettersSoFar == currentWordSize) {
 			progressBar.setValue(progressBarCtr++);
-			wowLabel.setText("WOW!");
-
 		}
 
 		POINTER++;
-		go(POINTER);
+		if(POINTER == 19){
+			wowLabel.setText("WOW!");
+		} else {
+			go(POINTER);
+		}
+		
 	}
 
 	public static void main(String[] args) throws IOException {
