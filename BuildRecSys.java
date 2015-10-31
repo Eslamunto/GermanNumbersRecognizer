@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,6 +23,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 public class BuildRecSys extends JFrame {
 
@@ -69,10 +71,12 @@ public class BuildRecSys extends JFrame {
 				System.out.println(recognizer.getTheCharacter());
 
 				micHelper();
+							
 			}
 
 			private void micHelper() {
 
+				wordToBeShownLabel.setText(""); // clears the word
 				String currentWord = germanDictionary.get(POINTER);
 				int currentWordSize = germanDictionary.get(POINTER).length();
 				int correctLettersSoFar = 0;
@@ -225,9 +229,10 @@ public class BuildRecSys extends JFrame {
 		list.add("neunzehn");
 		list.add("zwanzig");
 
+		Collections.shuffle(list);
 		return list;
 	}
-
+	
 	private JPanel createMainPanel() {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(backgroundColor);
@@ -390,4 +395,3 @@ public class BuildRecSys extends JFrame {
 
 	}
 }
-
