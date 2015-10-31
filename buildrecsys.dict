@@ -1,26 +1,41 @@
-A	AA AH
-B	B EH
-C 	T S EH
-D	D EH
-F	EH F
-G	G EH
-H	HH AH
-J	Y OW T
-K	K AH
-L	EH L
-M	EH M
-O	OW
-P	P EY
-Q	K UW
-R	EH R
-S	EH S
-T	T AY
-U	UW
-V	F AW
-W	V EY
-X	IH K S
-Y	OW P S AH L AA N
-Z	T S EH T
-N	N
-E	EY
-I	IY
+A		  AA AH
+A(2)	AA
+A(3)	AH
+B		  B EH
+B(2)	B EY
+C 		T S EH
+C(2)	T S EY
+D		  D EH
+D(2)	D EY
+F		  EH F
+G		  G EH
+G(2)	G EY
+H		  HH AH
+H(2)	HH AA
+J		  Y OW T
+K		  K AH
+L		  EH L
+L(2)	AA L
+M		  EH M
+M(2)	AA M
+O		  UW
+P		  P EY
+Q		  K UW
+R		  EH R
+S		  EH S
+T		  T AY
+U		  OW
+V		  F AW
+W		  V EY
+w(2)	V AA
+X		  IH K S
+Y		  OW P S AH L AA N
+Z		  T S EH T
+N		  EH N
+E		  EY
+I	  	IY
+I(2) 	IH
+ß		  EH S T S ET
+Ä		  EH
+Ö		  OW HH
+Ü		  OW UH
